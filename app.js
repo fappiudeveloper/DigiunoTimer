@@ -1,6 +1,6 @@
 'use strict';
 
-const APP_VERSION = '1.2.0';
+const APP_VERSION = '1.3.0';
 
 const SCHEMES = [
   { id: '12-12', name: '12:12 Principiante', icon: '🌱', fastHours: 12, eatHours: 12, desc: 'Il punto di partenza ideale. Digiuni 12 ore (incluso il sonno) e mangi liberamente nelle restanti 12.', difficulty: 'easy', type: 'time-restricted' },
@@ -308,6 +308,10 @@ function initModals() {
   document.getElementById('modal-stop-time-backdrop').addEventListener('click', () => closeModal('stop-time'));
   document.getElementById('modal-stop-time-close').addEventListener('click', () => closeModal('stop-time'));
   document.getElementById('stop-time-confirm-btn').addEventListener('click', confirmStopFast);
+  // Modifica record storico
+  document.getElementById('modal-edit-record-backdrop').addEventListener('click', () => closeModal('edit-record'));
+  document.getElementById('modal-edit-record-close').addEventListener('click', () => closeModal('edit-record'));
+  document.getElementById('edit-record-save-btn').addEventListener('click', confirmEditRecord);
 }
 function openModal(name) {
   document.getElementById('modal-'+name).classList.remove('hidden');
@@ -368,8 +372,35 @@ function renderHistory() {
     const timeStr=new Date(h.startTime).toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'});
     const badge=h.completed?'<span class="history-badge completed">Completato</span>':'<span class="history-badge partial">Parziale</span>';
     const note=h.note?`<div class="history-note">📝 ${escHtml(h.note)}</div>`:'';
-    return `<div class="history-item"><div class="history-icon">${h.completed?'✅':'⚠️'}</div><div class="history-info"><div class="history-date">${dateStr} ore ${timeStr}</div><div class="history-duration">${dh}h ${dm}m</div><div class="history-schema">${scheme.icon} ${scheme.name}</div>${note}</div>${badge}</div>`;
+    return `<div class="history-item"><div class="history-icon">${h.completed?'✅':'⚠️'}</div><div class="history-info"><div class="history-date">${dateStr} ore ${timeStr}</div><div class="history-duration">${dh}h ${dm}m</div><div class="history-schema">${scheme.icon} ${scheme.name}</div>${note}</div>${badge}<button class="history-edit" data-id="${h.id}" title="Modifica orari">✏️</button></div>`;
   }).join('');
+  list.querySelectorAll('.history-edit').forEach(btn => btn.addEventListener('click', () => editRecord(parseInt(btn.dataset.id))));
+}
+function editRecord(id) {
+  const rec = db.history.find(h => h.id === id);
+  if (!rec) return;
+  document.getElementById('edit-record-id').value = id;
+  document.getElementById('edit-record-start').value = toDatetimeLocal(rec.startTime);
+  document.getElementById('edit-record-end').value = toDatetimeLocal(rec.endTime);
+  openModal('edit-record');
+}
+function confirmEditRecord() {
+  const id = parseInt(document.getElementById('edit-record-id').value);
+  const startVal = document.getElementById('edit-record-start').value;
+  const endVal = document.getElementById('edit-record-end').value;
+  if (!startVal || !endVal) { showToast('Compila entrambi gli orari'); return; }
+  const startTs = new Date(startVal).getTime();
+  const endTs = new Date(endVal).getTime();
+  if (startTs > Date.now()) { showToast("L'inizio non può essere nel futuro"); return; }
+  if (endTs > Date.now()) { showToast("La fine non può essere nel futuro"); return; }
+  if (endTs <= startTs) { showToast("La fine deve essere dopo l'inizio"); return; }
+  const idx = db.history.findIndex(h => h.id === id);
+  if (idx === -1) return;
+  const durationMs = endTs - startTs;
+  const completed = durationMs >= getTargetHours(getScheme(db.history[idx].schemeId)) * 3600000;
+  db.history[idx] = { ...db.history[idx], startTime: startTs, endTime: endTs, durationMs, completed };
+  saveData(); closeModal('edit-record'); renderHistory(); updateMiniStats();
+  showToast('✅ Record aggiornato');
 }
 function clearHistory() {
   if (!confirm('Cancellare tutto lo storico dei digiuni?')) return;
