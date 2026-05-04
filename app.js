@@ -1,5 +1,7 @@
 'use strict';
 
+const APP_VERSION = '1.2.0';
+
 const SCHEMES = [
   { id: '12-12', name: '12:12 Principiante', icon: '🌱', fastHours: 12, eatHours: 12, desc: 'Il punto di partenza ideale. Digiuni 12 ore (incluso il sonno) e mangi liberamente nelle restanti 12.', difficulty: 'easy', type: 'time-restricted' },
   { id: '14-10', name: '14:10 Leggero', icon: '🌿', fastHours: 14, eatHours: 10, desc: 'Un passo avanti dal 12:12. Finestra alimentare di 10 ore, adatto a chi vuole risultati graduali.', difficulty: 'easy', type: 'time-restricted' },
@@ -38,6 +40,7 @@ function init() {
   initWater(); initNote(); renderSchemes(); renderHistory(); renderWeightLog(); renderInfo();
   updateMiniStats(); updateSchemeDisplay(); restoreActiveTimer(); updateNotifBtn();
   updateEatingWindowInfo();
+  document.getElementById('app-version').textContent = 'v' + APP_VERSION;
 }
 
 function initNav() { document.querySelectorAll('.nav-btn').forEach(b => b.addEventListener('click', () => switchTab(b.dataset.tab))); }
