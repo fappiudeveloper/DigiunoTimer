@@ -1,0 +1,28 @@
+{
+  "name": "DigiunoTimer",
+  "short_name": "DigiunoTimer",
+  "description": "Gestisci il tuo digiuno intermittente",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#0f0f1a",
+  "theme_color": "#0f0f1a",
+  "orientation": "portrait-primary",
+  "lang": "it",
+  "icons": [
+    {
+      "src": "icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["health", "lifestyle"],
+  "shortcuts": [
+    {
+      "name": "Inizia Digiuno",
+      "short_name": "Inizia",
+      "description": "Avvia un nuovo digiuno",
+      "url": "./"
+    }
+  ]
+}
