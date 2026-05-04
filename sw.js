@@ -1,4 +1,4 @@
-const CACHE = 'digiunotimer-v1';
+const CACHE = 'digiunotimer-v1.2.0';
 const ASSETS = ['./', './index.html', './style.css', './app.js', './manifest.json', 'https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js'];
 
 self.addEventListener('install', e => {
