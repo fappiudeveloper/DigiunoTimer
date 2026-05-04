@@ -2,7 +2,7 @@
 
 App web per la gestione del digiuno intermittente, installabile come PWA.
 
-**Demo:** https://fappiudeveloper.github.io/digiunotimer/
+**Demo:** https://fappiudeveloper.github.io/DigiunoTimer/
 
 ## Funzionalità
 
