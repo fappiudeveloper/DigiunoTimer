@@ -172,6 +172,8 @@ main::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
 .history-schema { font-size: 0.78rem; color: var(--accent); margin-top: 2px; }
 .history-note { font-size: 0.78rem; color: var(--text2); margin-top: 4px; font-style: italic; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 200px; }
 .history-badge { font-size: 0.72rem; padding: 3px 10px; border-radius: 20px; font-weight: 600; flex-shrink: 0; }
+.history-edit { background: none; border: none; cursor: pointer; font-size: 1rem; color: var(--text3); transition: color 0.2s; padding: 4px; flex-shrink: 0; line-height: 1; }
+.history-edit:hover { color: var(--accent); }
 .history-badge.completed { background: rgba(52,211,153,0.15); color: var(--green); }
 .history-badge.partial { background: rgba(251,191,36,0.15); color: var(--yellow); }
 .empty-msg { color: var(--text2); text-align: center; padding: 32px 16px; line-height: 1.6; font-size: 0.9rem; }

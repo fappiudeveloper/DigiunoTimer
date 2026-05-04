@@ -245,6 +245,22 @@
   </div>
 </div>
 
+<!-- MODAL: Modifica record storico -->
+<div id="modal-edit-record" class="modal hidden">
+  <div class="modal-backdrop" id="modal-edit-record-backdrop"></div>
+  <div class="modal-box modal-box-sm">
+    <div class="modal-header"><h3>Modifica Digiuno</h3><button class="modal-close" id="modal-edit-record-close">✕</button></div>
+    <div class="modal-body">
+      <input type="hidden" id="edit-record-id">
+      <label for="edit-record-start">Inizio digiuno</label>
+      <input type="datetime-local" id="edit-record-start" class="form-input">
+      <label for="edit-record-end" style="margin-top:12px">Fine digiuno</label>
+      <input type="datetime-local" id="edit-record-end" class="form-input">
+      <button class="btn btn-primary" id="edit-record-save-btn" style="margin-top:16px;width:100%">Salva modifiche</button>
+    </div>
+  </div>
+</div>
+
 <!-- MODAL: Orario fine -->
 <div id="modal-stop-time" class="modal hidden">
   <div class="modal-backdrop" id="modal-stop-time-backdrop"></div>
