@@ -37,6 +37,7 @@ function init() {
   applyTheme(db.theme); initNav(); initHeader(); initControls(); initModals();
   initWater(); initNote(); renderSchemes(); renderHistory(); renderWeightLog(); renderInfo();
   updateMiniStats(); updateSchemeDisplay(); restoreActiveTimer(); updateNotifBtn();
+  updateEatingWindowInfo();
 }
 
 function initNav() { document.querySelectorAll('.nav-btn').forEach(b => b.addEventListener('click', () => switchTab(b.dataset.tab))); }
@@ -91,6 +92,7 @@ function showFastingUI() {
   document.getElementById('btn-stop').classList.remove('hidden');
   document.getElementById('btn-cancel').classList.remove('hidden');
   document.getElementById('fast-start-info').classList.remove('hidden');
+  document.getElementById('eating-window-info').classList.add('hidden');
   document.getElementById('app').classList.add('fasting-active');
 }
 function hideFastingUI() {
@@ -99,6 +101,7 @@ function hideFastingUI() {
   document.getElementById('btn-cancel').classList.add('hidden');
   document.getElementById('fast-start-info').classList.add('hidden');
   document.getElementById('app').classList.remove('fasting-active');
+  updateEatingWindowInfo();
 }
 
 // --- START ---
@@ -136,6 +139,39 @@ function updateFastStartInfo() {
   const isToday = d.toISOString().slice(0,10) === today();
   document.getElementById('fast-start-time').textContent = isToday ? timeStr
     : d.toLocaleDateString('it-IT', { weekday: 'short', day: 'numeric', month: 'short' }) + ' ' + timeStr;
+  updateFastEndTime();
+}
+function updateFastEndTime() {
+  if (!db.currentFast) return;
+  const scheme = getScheme(db.currentFast.schemeId);
+  const endTs = db.currentFast.startTime + getTargetHours(scheme) * 3600000;
+  const d = new Date(endTs);
+  const timeStr = d.toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' });
+  const dayStr = d.toISOString().slice(0,10);
+  const now = new Date();
+  const todayStr = today();
+  const tomorrowStr = new Date(now.getTime() + 86400000).toISOString().slice(0,10);
+  let label = timeStr;
+  if (dayStr !== todayStr) label = (dayStr === tomorrowStr ? 'domani ' : d.toLocaleDateString('it-IT', { weekday: 'short', day: 'numeric' }) + ' ') + timeStr;
+  document.getElementById('fast-end-time').textContent = label;
+}
+function updateEatingWindowInfo() {
+  const el = document.getElementById('eating-window-info');
+  if (db.currentFast || !db.history.length) { el.classList.add('hidden'); return; }
+  const last = db.history[0];
+  if (!last.endTime) { el.classList.add('hidden'); return; }
+  const scheme = getScheme(last.schemeId);
+  if (!scheme.eatHours) { el.classList.add('hidden'); return; }
+  const eatEndTs = last.endTime + scheme.eatHours * 3600000;
+  if (eatEndTs <= Date.now()) { el.classList.add('hidden'); return; }
+  const d = new Date(eatEndTs);
+  const timeStr = d.toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' });
+  const dayStr = d.toISOString().slice(0,10);
+  const tomorrowStr = new Date(Date.now() + 86400000).toISOString().slice(0,10);
+  let label = timeStr;
+  if (dayStr !== today()) label = (dayStr === tomorrowStr ? 'domani ' : d.toLocaleDateString('it-IT', { weekday: 'short', day: 'numeric' }) + ' ') + timeStr;
+  document.getElementById('ew-fast-time').textContent = label;
+  el.classList.remove('hidden');
 }
 
 // --- STOP ---

@@ -83,11 +83,23 @@
         </div>
       </div>
 
-      <!-- Orario inizio (visibile solo durante digiuno attivo) -->
+      <!-- Orario inizio + fine prevista (visibile solo durante digiuno attivo) -->
       <div class="fast-start-info hidden" id="fast-start-info">
         <span class="fast-start-label">⏱ Iniziato:</span>
         <span class="fast-start-time" id="fast-start-time">--:--</span>
         <button class="fast-start-edit" id="fast-start-edit" title="Modifica orario di inizio">✏️</button>
+        <span class="fast-info-sep"></span>
+        <span class="fast-end-label">🏁</span>
+        <span class="fast-end-time" id="fast-end-time">--:--</span>
+      </div>
+
+      <!-- Finestra alimentare (visibile solo quando non si digiuna) -->
+      <div class="eating-window-info hidden" id="eating-window-info">
+        <span class="ew-icon">🍽️</span>
+        <div class="ew-content">
+          <span class="ew-label">Finestra alimentare aperta</span>
+          <span class="ew-time">Inizia il digiuno alle <strong id="ew-fast-time">--:--</strong></span>
+        </div>
       </div>
 
       <div class="mini-stats">
