@@ -178,6 +178,30 @@ main::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
 .history-badge.partial { background: rgba(251,191,36,0.15); color: var(--yellow); }
 .empty-msg { color: var(--text2); text-align: center; padding: 32px 16px; line-height: 1.6; font-size: 0.9rem; }
 
+/* DIET */
+.diet-day-nav { display: flex; align-items: center; justify-content: space-between; background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px 16px; margin-bottom: 12px; }
+.diet-nav-btn { width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--border); background: var(--card2); color: var(--text2); font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; flex-shrink: 0; }
+.diet-nav-btn:hover { color: var(--accent); border-color: var(--accent); }
+.diet-day-info { text-align: center; }
+.diet-day-label { font-size: 1.1rem; font-weight: 700; }
+.diet-day-sub { font-size: 0.75rem; color: var(--accent); font-weight: 600; }
+.diet-today-btn { display: block; margin: 0 auto 16px; }
+.diet-meals { display: flex; flex-direction: column; gap: 12px; }
+.diet-meal-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 16px; }
+.diet-meal-header { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.diet-meal-icon { font-size: 1.2rem; }
+.diet-meal-label { font-weight: 700; font-size: 0.92rem; }
+.diet-items { padding-left: 18px; }
+.diet-items li { font-size: 0.85rem; color: var(--text2); line-height: 1.6; }
+.diet-note { font-size: 0.78rem; color: var(--text3); margin-top: 6px; font-style: italic; }
+.diet-recipe-link { background: var(--card2); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 8px 12px; font-size: 0.85rem; color: var(--accent); cursor: pointer; font-weight: 600; }
+.diet-recipe-link:hover { border-color: var(--accent); }
+.recipe-subtitle { font-size: 0.78rem; color: var(--text2); margin: 14px 0 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+.recipe-subtitle:first-child { margin-top: 0; }
+.recipe-ingredients { padding-left: 18px; }
+.recipe-ingredients li { font-size: 0.88rem; color: var(--text); line-height: 1.7; }
+.recipe-steps { font-size: 0.88rem; color: var(--text2); line-height: 1.6; }
+
 /* STATS */
 .stats-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 20px; }
 .stat-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 14px 10px; text-align: center; }

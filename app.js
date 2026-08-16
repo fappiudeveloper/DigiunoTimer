@@ -1,6 +1,6 @@
 'use strict';
 
-const APP_VERSION = '1.3.0';
+const APP_VERSION = '1.4.0';
 
 const SCHEMES = [
   { id: '12-12', name: '12:12 Principiante', icon: '🌱', fastHours: 12, eatHours: 12, desc: 'Il punto di partenza ideale. Digiuni 12 ore (incluso il sonno) e mangi liberamente nelle restanti 12.', difficulty: 'easy', type: 'time-restricted' },
@@ -22,13 +22,55 @@ const INFO_CARDS = [
   { icon: '📈', title: 'Benefici scientificamente provati', content: '<ul><li>Perdita di peso e grasso viscerale</li><li>Riduzione insulina e resistenza insulinica</li><li>Miglioramento pressione sanguigna</li><li>Riduzione markers infiammatori</li><li>Autofagia cellulare</li><li>Miglioramento profilo lipidico</li></ul><p>Fonte: NEJM, Mayo Clinic, Harvard TH Chan School of Public Health</p>' },
 ];
 
+const RECIPES = {
+  'coppa-caffe': { name: 'Coppa al Caffè', ingredients: ['200 g yogurt greco bianco', '1 cucchiaino di miele', '1 caffè amaro', '10 g cacao amaro (per la copertura)', 'Acqua q.b. (per la copertura)', '3 gocce di dolcificante liquido (per la copertura)'], steps: 'Unire yogurt, miele e caffè e versare in una tazza. In un bicchierino a parte unire cacao, acqua e dolcificante. Versare il composto sullo yogurt formando uno strato di cremina al cioccolato. Lasciare in freezer per circa 30 minuti.' },
+  'fit-cheesecake': { name: 'Fit Cheesecake', ingredients: ['200 g yogurt greco senza lattosio bianco', '1 cucchiaino di miele', '1 cucchiaino di cacao amaro', '4 biscotti integrali sbriciolati, bagnati in poco latte', '1 cucchiaino di confettura ai frutti di bosco', 'Frutti di bosco q.b.'], steps: "Posizionare i biscotti sbriciolati sul fondo di una tazza. Ricoprire con lo yogurt mescolato a miele e cacao. Completare con la confettura e i frutti di bosco." },
+  'omelette-cocco': { name: 'Omelette di Cocco', ingredients: ['150 g albume', '1 cucchiaio di cocco rapè', '1 cucchiaino di miele (farcitura)', 'Cannella q.b. (farcitura)', '15 g anacardi (farcitura)'], steps: "Unire albume e cocco rapè, quindi cuocere l'omelette. Farcire con miele, cannella e anacardi." },
+};
+
+const DIET_DAYS = [
+  { label: 'Lunedì',
+    pranzo: { items: ['Riso basmati 90 g con zucchine 200 g', 'Bresaola 100 g con rucola q.b.', 'Olio di oliva extra vergine 1 cucchiaio + 1 cucchiaino'] },
+    merenda1: { items: ['Anguria 200 g'] },
+    merenda2: { recipe: 'coppa-caffe' },
+    cena: { items: ['Spigola 280 g', 'Fagiolini 200 g', 'Pane integrale 80 g da tostare dopo averlo pesato o privo di mollica', 'Olio di oliva extra vergine 1 cucchiaio + 1 cucchiaino'] } },
+  { label: 'Martedì',
+    pranzo: { items: ['Straccetti di petto di pollo 240 g impanati nel pangrattato q.b.', 'Olio di oliva extra vergine 1 cucchiaio + 1 cucchiaino'], note: "Impana gli straccetti direttamente nel pangrattato, aggiungi un pizzico di sale, parte dell'olio assegnato, semi di finocchio. Cuoci in friggitrice a 190° per 20 minuti." },
+    merenda1: { items: ['Melone Cantalupo 150 g + 50 g prosciutto crudo sgrassato'] },
+    merenda2: { recipe: 'fit-cheesecake' },
+    cena: { items: ['3 uova sode', 'Fagiolini 200 g', 'Pane integrale 80 g da tostare dopo averlo pesato o privo di mollica', 'Olio di oliva extra vergine 1 cucchiaio'] } },
+  { label: 'Mercoledì',
+    pranzo: { items: ['Siciliana light: 90 g pasta integrale, 200 g melanzane, 50 g pomodorini, 100 g fior di latte', 'Olio di oliva extra vergine 1 cucchiaio'] },
+    merenda1: { items: ['Frutta fresca 200 g + 10 g frutta secca'] },
+    merenda2: { recipe: 'coppa-caffe' },
+    cena: { items: ['Merluzzo / sogliola / nasello 300 g', 'Insalata mista', 'Patate 300 g', 'Olio di oliva extravergine 1 cucchiaio + 1 cucchiaino'] } },
+  { label: 'Giovedì',
+    pranzo: { items: ['Riso integrale o farro 90 g con zucchine 200 g alla julienne (friggitrice ad aria) e tonno al naturale 120 g', 'Olio di oliva extravergine 1 cucchiaio'] },
+    merenda1: { items: ['Prugne 200 g'] },
+    merenda2: { recipe: 'fit-cheesecake' },
+    cena: { items: ['Straccetti di vitello 200 g con piselli 130 g', 'Fagiolini 200 g', 'Pane integrale 70 g da tostare dopo averlo pesato o privo di mollica', 'Olio di oliva extravergine 1 cucchiaio + 1 cucchiaino'] } },
+  { label: 'Venerdì',
+    pranzo: { items: ['Pasta integrale 90 g con fiori di zucchine 250 g e ricotta di vacca 120 g', 'Olio di oliva extravergine 1 cucchiaio'] },
+    merenda1: { items: ['Frutta fresca 200 g'] },
+    merenda2: { recipe: 'coppa-caffe' },
+    cena: { items: ['Orata 300 g con patate 250 g', 'Insalata mista', 'Olio di oliva extra vergine 1 cucchiaio + 1 cucchiaino'] } },
+  { label: 'Sabato',
+    pranzo: { items: ['Pesce 260 g o carne bianca 200 g', '1 porzione di verdura a scelta', 'Olio di oliva extra vergine 1 cucchiaio + 1 cucchiaino'] },
+    merenda1: { items: ['Frutta fresca 200 g + 10 g frutta secca'] },
+    merenda2: { recipe: 'omelette-cocco' },
+    cena: { items: ['Pizza Margherita o altra pizza non eccessivamente farcita'], note: 'Evitare fritti, dolci, alcolici.' } },
+  { label: 'Domenica',
+    pranzo: { items: ['Tagliatelle integrali 90 g con pomodorini rossi e gialli 200 g, basilico', 'Parmigiano alta stagionatura 50 g', 'Olio di oliva extra vergine 1 cucchiaio', '1 dolcino / gelato'] },
+    cena: { items: ['Lonza di maiale 200 g', 'Zucchine 200 g', 'Pane integrale 80 g da tostare dopo averlo pesato o privo di mollica', 'Olio di oliva extra vergine 1 cucchiaio'] } },
+];
+
 const DB_KEY = 'digiunotimer_v2';
 function loadData() { try { const r = localStorage.getItem(DB_KEY); return r ? Object.assign(defaultData(), JSON.parse(r)) : defaultData(); } catch { return defaultData(); } }
 function defaultData() { return { currentScheme: '16-8', currentFast: null, history: [], waterToday: { date: today(), count: 0 }, weightLog: [], theme: 'dark', notifEnabled: false, streak: 0, bestStreak: 0 }; }
 function saveData() { try { localStorage.setItem(DB_KEY, JSON.stringify(db)); } catch(e) { console.warn(e); } }
 function today() { return new Date().toISOString().slice(0, 10); }
 
-let db = loadData(), timerInterval = null;
+let db = loadData(), timerInterval = null, dietDayIndex = null;
 const charts = {};
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -37,7 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function init() {
   applyTheme(db.theme); initNav(); initHeader(); initControls(); initModals();
-  initWater(); initNote(); renderSchemes(); renderHistory(); renderWeightLog(); renderInfo();
+  initWater(); initNote(); initDiet(); renderSchemes(); renderHistory(); renderWeightLog(); renderInfo();
   updateMiniStats(); updateSchemeDisplay(); restoreActiveTimer(); updateNotifBtn();
   updateEatingWindowInfo();
   document.getElementById('app-version').textContent = 'v' + APP_VERSION;
@@ -312,6 +354,9 @@ function initModals() {
   document.getElementById('modal-edit-record-backdrop').addEventListener('click', () => closeModal('edit-record'));
   document.getElementById('modal-edit-record-close').addEventListener('click', () => closeModal('edit-record'));
   document.getElementById('edit-record-save-btn').addEventListener('click', confirmEditRecord);
+  // Ricette dieta
+  document.getElementById('modal-recipe-backdrop').addEventListener('click', () => closeModal('recipe'));
+  document.getElementById('modal-recipe-close').addEventListener('click', () => closeModal('recipe'));
 }
 function openModal(name) {
   document.getElementById('modal-'+name).classList.remove('hidden');
@@ -405,6 +450,54 @@ function confirmEditRecord() {
 function clearHistory() {
   if (!confirm('Cancellare tutto lo storico dei digiuni?')) return;
   db.history=[]; db.streak=0; db.bestStreak=0; saveData(); renderHistory(); updateMiniStats(); showToast('Storico cancellato');
+}
+
+function getTodayDietIndex() { const d = new Date().getDay(); return d === 0 ? 7 : d; }
+function initDiet() {
+  dietDayIndex = getTodayDietIndex();
+  document.getElementById('diet-prev').addEventListener('click', () => changeDietDay(-1));
+  document.getElementById('diet-next').addEventListener('click', () => changeDietDay(1));
+  document.getElementById('diet-today-btn').addEventListener('click', () => { dietDayIndex = getTodayDietIndex(); renderDiet(); });
+  renderDiet();
+}
+function changeDietDay(delta) {
+  dietDayIndex = ((dietDayIndex - 1 + delta + 7) % 7) + 1;
+  renderDiet();
+}
+function renderDiet() {
+  const day = DIET_DAYS[dietDayIndex - 1];
+  const isToday = dietDayIndex === getTodayDietIndex();
+  document.getElementById('diet-day-label').textContent = day.label;
+  document.getElementById('diet-day-sub').textContent = isToday ? 'Oggi' : `Giorno ${dietDayIndex}`;
+  document.getElementById('diet-today-btn').classList.toggle('hidden', isToday);
+  document.getElementById('diet-meals').innerHTML = dietMealsHtml(day);
+  document.querySelectorAll('.diet-recipe-link').forEach(el => el.addEventListener('click', () => openRecipe(el.dataset.recipe)));
+}
+function dietMealsHtml(day) {
+  const meals = [
+    { key: 'pranzo', label: 'Pranzo', icon: '🍽️' },
+    { key: 'merenda1', label: 'Merenda', icon: '🍏' },
+    { key: 'merenda2', label: 'Merenda', icon: '☕' },
+    { key: 'cena', label: 'Cena', icon: '🌙' },
+  ];
+  return meals.filter(m => day[m.key]).map(m => {
+    const meal = day[m.key];
+    let body;
+    if (meal.recipe) {
+      body = `<button class="diet-recipe-link" data-recipe="${meal.recipe}">📖 ${RECIPES[meal.recipe].name}</button>`;
+    } else {
+      body = `<ul class="diet-items">${meal.items.map(i => `<li>${escHtml(i)}</li>`).join('')}</ul>`;
+      if (meal.note) body += `<p class="diet-note">${escHtml(meal.note)}</p>`;
+    }
+    return `<div class="diet-meal-card"><div class="diet-meal-header"><span class="diet-meal-icon">${m.icon}</span><span class="diet-meal-label">${m.label}</span></div>${body}</div>`;
+  }).join('');
+}
+function openRecipe(id) {
+  const r = RECIPES[id];
+  document.getElementById('recipe-title').textContent = r.name;
+  document.getElementById('recipe-ingredients').innerHTML = r.ingredients.map(i => `<li>${escHtml(i)}</li>`).join('');
+  document.getElementById('recipe-steps').textContent = r.steps;
+  openModal('recipe');
 }
 
 function renderInfo() {

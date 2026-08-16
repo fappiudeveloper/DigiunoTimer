@@ -143,6 +143,21 @@
       <div class="schemes-grid" id="schemes-grid"></div>
     </section>
 
+    <section id="tab-dieta" class="tab-section">
+      <h2 class="section-title">Piano Alimentare</h2>
+      <p class="section-desc">Schema digiuno 12:00–20:00 · Ciclo settimanale di 7 giorni</p>
+      <div class="diet-day-nav">
+        <button class="diet-nav-btn" id="diet-prev" aria-label="Giorno precedente">‹</button>
+        <div class="diet-day-info">
+          <div class="diet-day-label" id="diet-day-label">Lunedì</div>
+          <div class="diet-day-sub" id="diet-day-sub">Oggi</div>
+        </div>
+        <button class="diet-nav-btn" id="diet-next" aria-label="Giorno successivo">›</button>
+      </div>
+      <button class="btn btn-ghost btn-sm diet-today-btn hidden" id="diet-today-btn">Torna a oggi</button>
+      <div id="diet-meals" class="diet-meals"></div>
+    </section>
+
     <section id="tab-storico" class="tab-section">
       <div class="section-header-row">
         <h2 class="section-title">Storico Digiuni</h2>
@@ -190,6 +205,10 @@
     <button class="nav-btn" data-tab="schemi">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
       <span>Schemi</span>
+    </button>
+    <button class="nav-btn" data-tab="dieta">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20c-4-1-7-4-7-9a5 5 0 0 1 5-5c1 0 2 .3 3 1 1-.7 2-1 3-1a5 5 0 0 1 5 5c0 5-3 8-7 9-.3.1-.7.1-1 0z"/><path d="M12 6c0-2 1-3 3-4"/></svg>
+      <span>Dieta</span>
     </button>
     <button class="nav-btn" data-tab="storico">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
@@ -257,6 +276,20 @@
       <label for="edit-record-end" style="margin-top:12px">Fine digiuno</label>
       <input type="datetime-local" id="edit-record-end" class="form-input">
       <button class="btn btn-primary" id="edit-record-save-btn" style="margin-top:16px;width:100%">Salva modifiche</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Ricetta -->
+<div id="modal-recipe" class="modal hidden">
+  <div class="modal-backdrop" id="modal-recipe-backdrop"></div>
+  <div class="modal-box modal-box-sm">
+    <div class="modal-header"><h3 id="recipe-title">Ricetta</h3><button class="modal-close" id="modal-recipe-close">✕</button></div>
+    <div class="modal-body">
+      <h4 class="recipe-subtitle">Ingredienti</h4>
+      <ul id="recipe-ingredients" class="recipe-ingredients"></ul>
+      <h4 class="recipe-subtitle">Preparazione</h4>
+      <p id="recipe-steps" class="recipe-steps"></p>
     </div>
   </div>
 </div>
