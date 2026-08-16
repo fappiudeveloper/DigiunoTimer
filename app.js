@@ -1,6 +1,6 @@
 'use strict';
 
-const APP_VERSION = '1.4.0';
+const APP_VERSION = '1.4.1';
 
 const SCHEMES = [
   { id: '12-12', name: '12:12 Principiante', icon: '🌱', fastHours: 12, eatHours: 12, desc: 'Il punto di partenza ideale. Digiuni 12 ore (incluso il sonno) e mangi liberamente nelle restanti 12.', difficulty: 'easy', type: 'time-restricted' },
@@ -78,7 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function init() {
-  applyTheme(db.theme); initNav(); initHeader(); initControls(); initModals();
+  applyTheme(db.theme); initNav(); initHeader(); initControls(); initModals(); initUpdateBanner();
   initWater(); initNote(); initDiet(); renderSchemes(); renderHistory(); renderWeightLog(); renderInfo();
   updateMiniStats(); updateSchemeDisplay(); restoreActiveTimer(); updateNotifBtn();
   updateEatingWindowInfo();
@@ -560,4 +560,22 @@ function escHtml(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(
 let toastTimer=null;
 function showToast(msg){const el=document.getElementById('toast');el.textContent=msg;el.classList.remove('hidden');clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.add('hidden'),3000);}
 
-if('serviceWorker' in navigator) window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
+function initUpdateBanner() {
+  document.getElementById('update-reload-btn').addEventListener('click', () => window.location.reload());
+}
+function showUpdateBanner() { document.getElementById('update-banner').classList.remove('hidden'); }
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js').then(reg => {
+      reg.addEventListener('updatefound', () => {
+        const nw = reg.installing;
+        if (!nw) return;
+        nw.addEventListener('statechange', () => {
+          if (nw.state === 'installed' && navigator.serviceWorker.controller) showUpdateBanner();
+        });
+      });
+      document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') reg.update(); });
+    }).catch(() => {});
+  });
+}
